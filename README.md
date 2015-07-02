@@ -1,43 +1,45 @@
-# Visualization of the k-means clustering algorithm in D3.js
-============================================================
+# Visualization of the gradient descent algorithm for linear regression in D3.js
+================================================================================
 
 
-> k-means clustering is a method of vector quantization, originally from signal 
-processing, that is popular for cluster analysis in data mining. k-means 
-clustering aims to partition n observations into k clusters in which each 
-observation belongs to the cluster with the nearest mean, serving as a 
-prototype of the cluster. This results in a partitioning of the data space into 
-Voronoi cells.
+> Gradient descent is a first-order optimization algorithm. To find a local 
+minimum of a function using gradient descent, one takes steps proportional to 
+the negative of the gradient (or of the approximate gradient) of the function 
+at the current point..
 
-source: [wikipedia](https://en.wikipedia.org/wiki/K-means_clustering)
+source: [wikipedia](https://en.wikipedia.org/wiki/Gradient_descent)
 
-![k-means clustering](/media/kmeans.png "K-means clustering")
+![Gradient descent](/media/thumbnail.png "Gradient descent")
 
-See the algorithm in action [here](http://nl-hugo.github.io/d3-kmeans/index.html).
+See the algorithm in action [here](http://nl-hugo.github.io/d3-gradient-descent/index.html).
 
 
 ## Source Code Layout
 
-    media\				media files
-    kmeans.css          CSS stylesheet
-    index.html          webpage demonstrating the algorithm
-    kmeans.js           JavaScript file with the source code for the algorithm visualization
-    README.md           README file that appears on the website's github page
+    media\					media files
+    gradient-descent.css    CSS stylesheet
+    gradient-descent.js     JavaScript file with the source code for the algorithm visualization
+    index.html          	webpage demonstrating the algorithm
+    README.md           	README file that appears on the website's github page
 
 
 ## Raw Data
 
-Data are randomly generated x,y-coordinates between 0 and the width/height of 
-the canvas.
+Data are randomly generated x,y-coordinates using the function `slope * x + 
+intercept + error()` where `error()` is a zero-mean normal distribution with a 
+standard deviation of `0.9`.
 
 
 ## The Algorithm
 
-1. The algorithm is initialized with _n_ random points, along with _k_ randomly 
-generated 'means' (centroid) within the data domain. 
-2. When the algorithm starts, each point is assigned the color of the closest 
-centroid, forming _k_ clusters. _Closest_ is defined as the smallest 
-[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_geometry) between 
-two points.
-3. The centroids are moved to the center of the cluster.
-4. Steps 2 and 3 are repeated until the maximum number of iterations is reached.
+1. The algorithm is initialized with _n_ random points using the function 
+`y = slope * x + intercept + error()`. Cost function arguments _theta0_ and 
+_theta1_ are initialized at 0.
+
+2. theta0 and theta1 are simultaneously computed as: 
+	* theta0 := theta0 - learning rate * partial derivative of the cost function
+	* theta1 := theta1 - learning rate * partial derivative of the cost function
+
+3. Step 2 is repeated until convergence. Each step makes the regression 
+function more accurate. Convergence is achieved when the mean squared error 
+between two steps is less than 0.0001. 
