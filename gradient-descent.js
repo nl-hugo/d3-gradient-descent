@@ -23,11 +23,18 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
 		intercept = 2.5,
 		stddev = 0.9;
     
-    
+	var numberFormat = d3.format(".4f");
+	
     var margin = {top: 25, right: 25, bottom: 50, left: 50},
         width = w - margin.left - margin.right,
         height = h - margin.top - margin.bottom;
-		
+	
+    var svg = d3.select(elt).append("svg")
+        .style("width", width + margin.left + margin.right)
+        .style("height", height + margin.top + margin.bottom);
+	
+	
+	// The hypothesis plot
 	var xHypothesis = d3.scale.linear()
 		.domain([0, 10])	
 		.range([0, w / 2 - margin.left - margin.right]);	
@@ -44,30 +51,6 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
 		.scale(yHypothesis)
 		.orient("left");
 
-
-	var xCostFunction = d3.scale.linear()
-		.domain([0, intercept])	
-		.range([0, w / 2 - margin.left - margin.right]);	
-	
-	var yCostFunction = d3.scale.linear()
-		.domain([0, 1])	
-		.range([height, 0]);	
-		
-	var xCostFunctionAxis = d3.svg.axis()
-		.scale(xCostFunction)
-		.orient("bottom");
-		
-	var yCostFunctionAxis = d3.svg.axis()
-		.scale(yCostFunction)
-		.orient("left");
-
-
-		
-    var svg = d3.select(elt).append("svg")
-        .style("width", width + margin.left + margin.right)
-        .style("height", height + margin.top + margin.bottom);
-		
-        
     var hypothesisGroup = svg.append("g")
         .attr("class", "hypothesis")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -87,9 +70,24 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
 		.attr("class", "y axis")
 		.call(yHypothesisAxis);
 
-	 
-	 
+		
+	// The cost function plot
+	var xCostFunction = d3.scale.linear()
+		.domain([0, intercept])	
+		.range([0, w / 2 - margin.left - margin.right]);	
 	
+	var yCostFunction = d3.scale.linear()
+		.domain([0, 1])	
+		.range([height, 0]);	
+		
+	var xCostFunctionAxis = d3.svg.axis()
+		.scale(xCostFunction)
+		.orient("bottom");
+		
+	var yCostFunctionAxis = d3.svg.axis()
+		.scale(yCostFunction)
+		.orient("left");
+
     var costFunctionGroup = svg.append("g")
         .attr("class", "cost-function")
         .attr("transform", "translate(" + (2 * margin.left + width / 2) + "," + margin.top + ")");
@@ -122,7 +120,7 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
 		.text("θ₀ (slope)");
 	
 
-
+	// Text labels
     svg.append("g")
         .append("text")
         .attr("class", "status-label")
@@ -137,7 +135,6 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
             "," + 2*margin.top + ")")
         .text("");
 	
-	var numberFormat = d3.format(".4f");
 	
 	/**
 	 * Generates a normal distributed error.
@@ -151,7 +148,6 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
 		var x = Math.round(Math.random() * xHypothesis.domain()[1]);
         return { 
             x: x, 
-//			y: (-0.5 * x + 10 / 1.5 + error())
 			y: (slope * x + intercept + error())
         };
     }
@@ -169,17 +165,17 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
         return result;
     }
 	
-	
-	// hypothesis: h(x) = theta0 + theta1 * x
-	// parameters: theta0, theta1
-	// dit is de functie voor de regressie lijn
 	/** 
-	 * The regression function
+	 * Returns the regression function
 	 */ 
-	function hypothesis(/*theta0, theta1,*/ x) {
+	function hypothesis(x) {
 		return theta1 * x + theta0;
 	}
 	
+	/**
+	 * Returns the difference between the predicted value and the actual value 
+	 * for a specific point.
+	 */
 	function predictionError(point) {
 		return hypothesis(point.x) - point.y;
 	}
@@ -191,15 +187,9 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
 		return Math.pow(predictionError(point), 2);
 	}
 	
-	
 	/**
-	 * Returns the squared error for the specified point under the current 
-	 * hypothesis. The function computes the expected outcome first, and then 
-	 * squares the difference with the actual value.
+	 * Returns the mean squared error for all points in the dataset.
 	 */
-	// cost function: 1/(2 * m) * sum(h(xi) - yi)^2
-	// m = aantal punten
-	// We can measure the accuracy of our hypothesis function 
 	function meanSquaredError() {
 		var sum = 0;
 		points.forEach(function(d) {
@@ -230,10 +220,9 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
 		return sum / points.length;		
 	}
 	
-	
-
-	
-
+	/**
+	 * Appends the data points to the plot.
+	 */
 	function appendPoints() {
 	
         hypothesisGroup.selectAll("circle")
@@ -250,20 +239,13 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
      */
     function update() {
     
-		console.log("UPDATE " + theta0 + " -- " + theta1 + " -- " + meanSquaredError());
-		
-		// Redraw the line
-		//var theta0 = 0;
-		//var theta1 = 1;
+//		console.log("UPDATE " + theta0 + " -- " + theta1 + " -- " + meanSquaredError());
 		
 		var x1 = xHypothesis.domain()[0];
 		var x2 = xHypothesis.domain()[1];
 		
 		var y1 = hypothesis(x1);
 		var y2 = hypothesis(x2);
-		
-		//console.log(x1);
-		//console.log(x2);
 		
 		var lineData = [{y1, y2}];
 		
@@ -281,12 +263,8 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
 			.attr("y1", function(d) { return yHypothesis(d.y1); })
 			.attr("y2", function(d) { return yHypothesis(d.y2); });
 		
-
-
 		
 		var thetaData = [{theta0, theta1}];
-
-		//console.log(thetaData);
 		
 		// draw the cost function line
 		var circle = costFunctionGroup.selectAll(".circle")
@@ -297,48 +275,33 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
             .attr("cy", function(d) { return yCostFunction(d.theta1); })
             .attr("r", 2);        
 
-    }
-
-    /**
-     * Updates the text in the label.
-     */
-    function updateLabels() {
+		// Update the labels
         svg.selectAll(".status-label").text("Iteration " + iter + "; learningRate=" + alpha + "; mse=" + numberFormat(meanSquaredError()));
         svg.selectAll(".function-label").text("hθ(x) = " + numberFormat(theta1) + " • x + "  + numberFormat(theta0));
-    }
+	}
     
     /**
-     * Executes one iteration of the algorithm:
-     * - Fill the points with the color of the closest centroid (this makes it 
-     *   part of its cluster)
-     * - Move the centroids to the center of their cluster.
+     * Executes one iteration of the algorithm
      */
     function iterate() {
-        
 
-		var mse_before = meanSquaredError()
+		var mse_before = meanSquaredError();
 
-		
-		// Do stuff
-		var temp0 = theta0 - (alpha * derivativeTheta0(/*theta0, theta1*/));
-		var temp1 = theta1 - (alpha * derivativeTheta1(/*theta0, theta1*/));
+		// The descent step
+		var temp0 = theta0 - (alpha * derivativeTheta0());
+		var temp1 = theta1 - (alpha * derivativeTheta1());
 		theta0 = temp0;
 		theta1 = temp1;
 		
-		
 		isConverged = (mse_before - meanSquaredError() < convergenceTh); 
-		
-        // Update label
-        updateLabels();
 		
         // Update the chart
         update();
     }
 	
-
     /** 
-     * The main function initializes the algorithm and calls an iteration every 
-     * two seconds.
+     * The main function initializes the algorithm and calls an iteration 100 
+	 * milliseconds.
      */
     function initialize() {
         
@@ -357,7 +320,6 @@ function gradientDescent(elt, w, h, numPoints, learningRate) {
                 iter++;
             } else {
 				clearInterval(interval);
-				//setText("Done");
 			}
         }, 100);
     }
