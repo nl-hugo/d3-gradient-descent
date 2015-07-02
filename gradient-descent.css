@@ -1,0 +1,42 @@
+/**
+ * gradient-descent.css
+ * Stylesheet for the gradient descent visualization. 
+ *
+ * @author: Hugo Janssen
+ * @date:   7/2/2015
+ */
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+.gradient-descent-chart {
+    font-family: "Open Sans", Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    fill: #aaa;
+}
+
+.gradient-descent-chart circle {
+	stroke: #00f;
+    stroke-width: 1.5px;
+	fill: #33f;
+	opacity: 0.5;
+}
+
+.gradient-descent-chart .title {
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.gradient-descent-chart .regression-line {
+	stroke: #f33;
+    stroke-width: 1.5px;
+}
+
+.gradient-descent-chart .cost-function  circle {
+	stroke: none;
+}
+
+.gradient-descent-chart .axis line, .axis path {
+    fill: none;
+    stroke-width: 1px;
+    stroke: #ccc;
+    shape-rendering: crispEdges;
+}
