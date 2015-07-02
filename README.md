@@ -30,6 +30,27 @@ intercept + error()` where `error()` is a zero-mean normal distribution with a
 standard deviation of `0.9`.
 
 
+## The hypothesis function
+
+The hypothesis function has the general form for a straight line:
+
+```
+h(x) = intercept + slope * x
+```
+
+## The cost function
+
+The accuracy of the hypothesis function can be measured with a cost function, 
+which takes an average of all the results of the hypothesis compared to the 
+actual outputs. 
+
+```
+J(intercept, slope) = 1 / 2*m * sum(h(x) - y) ^ 2
+```
+
+This function is also known as the mean squared error.
+
+
 ## The Algorithm
 
 1. The algorithm is initialized with _n_ random points using the function 
