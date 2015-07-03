@@ -63,4 +63,4 @@ _slope_ are initialized at 0.
 
 3. Step 2 is repeated until convergence. Each step makes the regression 
 function more accurate. Convergence is declared when the mean squared error 
-(or cost) between two steps is less than 0.0001. 
+(or cost) between two steps is less than 0.0001.
