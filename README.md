@@ -42,7 +42,7 @@ h(x) = intercept + slope * x
 
 The accuracy of the hypothesis function can be measured with a cost function, 
 which takes an average of all the results of the hypothesis compared to the 
-actual outputs. 
+actual outputs.
 
 ```
 J(intercept, slope) = 1 / (2*m) * sum(h(x) - y) ^ 2
