@@ -5,13 +5,13 @@
 > Gradient descent is a first-order optimization algorithm. To find a local 
 minimum of a function using gradient descent, one takes steps proportional to 
 the negative of the gradient (or of the approximate gradient) of the function 
-at the current point..
+at the current point.
 
 source: [wikipedia](https://en.wikipedia.org/wiki/Gradient_descent)
 
 ![Gradient descent](/media/thumbnail.png "Gradient descent")
 
-See the algorithm in action [here](http://nl-hugo.github.io/d3-gradient-descent/index.html).
+See the algorithm in action [here](http://nl-hugo.github.io/d3-gradient-descent/index.html)
 
 
 ## Source Code Layout
