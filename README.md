@@ -45,7 +45,7 @@ which takes an average of all the results of the hypothesis compared to the
 actual outputs. 
 
 ```
-J(intercept, slope) = 1 / 2*m * sum(h(x) - y) ^ 2
+J(intercept, slope) = 1 / (2*m) * sum(h(x) - y) ^ 2
 ```
 
 This function is also known as the mean squared error.
@@ -54,13 +54,13 @@ This function is also known as the mean squared error.
 ## The Algorithm
 
 1. The algorithm is initialized with _n_ random points using the function 
-`y = slope * x + intercept + error()`. Cost function arguments _theta0_ and 
-_theta1_ are initialized at 0.
+`y = slope * x + intercept + error()`. Cost function arguments _intercept_ and 
+_slope_ are initialized at 0.
 
-2. theta0 and theta1 are simultaneously computed as: 
-	* theta0 := theta0 - learning rate * partial derivative of the cost function
-	* theta1 := theta1 - learning rate * partial derivative of the cost function
+2. _intercept_ and _slope_ are simultaneously computed as: 
+	* intercept := intercept - learning rate * partial derivative of the cost function
+	* slope := slope - learning rate * partial derivative of the cost function
 
 3. Step 2 is repeated until convergence. Each step makes the regression 
-function more accurate. Convergence is achieved when the mean squared error 
-between two steps is less than 0.0001. 
+function more accurate. Convergence is declared when the mean squared error 
+(or cost) between two steps is less than 0.0001. 
