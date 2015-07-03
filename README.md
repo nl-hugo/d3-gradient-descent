@@ -57,7 +57,7 @@ This function is also known as the mean squared error.
 `y = slope * x + intercept + error()`. Cost function arguments _intercept_ and 
 _slope_ are initialized at 0.
 
-2. _intercept_ and _slope_ are simultaneously computed as: 
+2. Arguments _intercept_ and _slope_ are simultaneously computed as: 
 	* intercept := intercept - learning rate * partial derivative of the cost function
 	* slope := slope - learning rate * partial derivative of the cost function
 
